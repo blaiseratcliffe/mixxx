@@ -1,0 +1,3 @@
+# Raspberry Pi 5 + Waveshare 9-DSI-TOUCH-B, SKU 32772
+dtoverlay=vc4-kms-v3d
+dtoverlay=vc4-kms-dsi-waveshare-panel-v2,9_0_inch_b
