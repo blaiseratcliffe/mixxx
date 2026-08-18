@@ -30,7 +30,8 @@ class WaveformWidgetType {
         AllShaderTexturedFiltered,   // 22 Filtered (textured) (all-shaders)
         AllShaderTexturedRGB,        // 23 RGB (textured) (all-shaders)
         AllShaderTexturedStacked,    // 24 Stacked (textured) (all-shaders)
-        AllShaderRGBStackedWaveform, // 26 Stacked (all-shaders)
+        AllShaderRGBStackedWaveform, // 25 Stacked (all-shaders)
+        AllShaderCDJWaveform,        // 26 CDJ 3Band (custom)
         Count_WaveformwidgetType     //    Also used as invalid value
     };
 };

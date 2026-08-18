@@ -24,6 +24,7 @@
 #include "waveform/visualsmanager.h"
 #include "waveform/vsyncthread.h"
 #ifdef MIXXX_USE_QOPENGL
+#include "waveform/widgets/allshader/cdjwaveformwidget.h"
 #include "waveform/widgets/allshader/filteredwaveformwidget.h"
 #include "waveform/widgets/allshader/hsvwaveformwidget.h"
 #include "waveform/widgets/allshader/lrrgbwaveformwidget.h"
@@ -593,6 +594,8 @@ bool WaveformWidgetFactory::widgetTypeSupportsUntilMark() const {
     switch (m_configType) {
     case WaveformWidgetType::AllShaderRGBWaveform:
         return true;
+    case WaveformWidgetType::AllShaderCDJWaveform:
+        return true;
     case WaveformWidgetType::AllShaderLRRGBWaveform:
         return true;
     case WaveformWidgetType::AllShaderFilteredWaveform:
@@ -1030,6 +1033,13 @@ void WaveformWidgetFactory::evaluateWidgets() {
             setWaveformVarsByType.operator()<allshader::RGBWaveformWidget>();
             break;
 #endif
+        case WaveformWidgetType::AllShaderCDJWaveform:
+#ifndef MIXXX_USE_QOPENGL
+            continue;
+#else
+            setWaveformVarsByType.operator()<allshader::CDJWaveformWidget>();
+            break;
+#endif
         case WaveformWidgetType::AllShaderLRRGBWaveform:
 #ifndef MIXXX_USE_QOPENGL
             continue;
@@ -1169,6 +1179,9 @@ WaveformWidgetAbstract* WaveformWidgetFactory::createWaveformWidget(
 #ifdef MIXXX_USE_QOPENGL
         case WaveformWidgetType::AllShaderRGBWaveform:
             widget = new allshader::RGBWaveformWidget(viewer->getGroup(), viewer);
+            break;
+        case WaveformWidgetType::AllShaderCDJWaveform:
+            widget = new allshader::CDJWaveformWidget(viewer->getGroup(), viewer);
             break;
         case WaveformWidgetType::AllShaderLRRGBWaveform:
             widget = new allshader::LRRGBWaveformWidget(viewer->getGroup(), viewer);
