@@ -500,7 +500,49 @@ void WaveformWidgetFactory::addVuMeter(WVuMeterBase* pVuMeter) {
 }
 
 void WaveformWidgetFactory::slotSkinLoaded() {
+    // CDJDeere has its own dedicated waveform renderer. Automatically select it
+    // when the skin is loaded, while remembering the user's previous waveform
+    // type so it can be restored when leaving CDJDeere.
+    if (m_config) {
+        const QString skinName = m_config->getValueString(
+                ConfigKey("[Config]", "ResizableSkin"));
+
+        constexpr auto cdjType = WaveformWidgetType::AllShaderCDJWaveform;
+        constexpr auto defaultNormalType = WaveformWidgetType::AllShaderRGBWaveform;
+
+        const ConfigKey previousTypeKey(
+                "[CDJDeere]", "PreviousWaveformType");
+
+        if (skinName == QStringLiteral("CDJDeere")) {
+            if (m_configType != cdjType) {
+                // Remember the user's normal waveform choice before overriding it.
+                m_config->setValue(
+                        previousTypeKey,
+                        static_cast<int>(m_configType));
+
+                setWidgetType(cdjType, &m_configType);
+            }
+        } else if (m_configType == cdjType) {
+            bool ok = false;
+            const int previousTypeValue =
+                    m_config->getValueString(previousTypeKey).toInt(&ok);
+
+            auto restoreType = ok
+                    ? static_cast<WaveformWidgetType::Type>(previousTypeValue)
+                    : defaultNormalType;
+
+            // Never restore the CDJ renderer to a non-CDJ skin.
+            if (restoreType == cdjType ||
+                    findHandleIndexFromType(restoreType) < 0) {
+                restoreType = defaultNormalType;
+            }
+
+            setWidgetType(restoreType, &m_configType);
+        }
+    }
+
     setWidgetTypeFromConfig();
+
 #if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0) && defined __WINDOWS__
     // This regenerates the waveforms twice because of a bug found on Windows
     // where the first one fails.
