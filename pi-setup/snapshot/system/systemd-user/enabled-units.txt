@@ -1,0 +1,17 @@
+UNIT FILE                                    STATE   PRESET
+filter-chain.service                         enabled enabled
+gcr-ssh-agent.service                        enabled enabled
+gnome-keyring-daemon.service                 enabled enabled
+tracker-extract-3.service                    enabled enabled
+tracker-miner-fs-3.service                   enabled enabled
+waybar.service                               enabled enabled
+xdg-desktop-portal-rewrite-launchers.service enabled enabled
+dirmngr.socket                               enabled enabled
+gcr-ssh-agent.socket                         enabled enabled
+gnome-keyring-daemon.socket                  enabled enabled
+gpg-agent-browser.socket                     enabled enabled
+gpg-agent-extra.socket                       enabled enabled
+gpg-agent-ssh.socket                         enabled enabled
+gpg-agent.socket                             enabled enabled
+
+14 unit files listed.
